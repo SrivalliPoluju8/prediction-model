@@ -10,7 +10,7 @@ CORS(app)  # Enable CORS if needed
 logging.basicConfig(level=logging.INFO)
 
 # Load your trained model
-MODEL_PATH = r"Linear_model.pkl"
+MODEL_PATH = "Linear_model.pkl"
 try:
     model = joblib.load(MODEL_PATH)
     app.logger.info("Model loaded successfully.")
@@ -55,4 +55,5 @@ def predict():
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)), debug=True)
+
 
