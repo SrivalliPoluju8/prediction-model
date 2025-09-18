@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>California Housing Predictor</title>
+</head>
+<body>
+  <h1>California Housing - Linear Regression</h1>
+  <form id="predictForm" onsubmit="return false;">
+    <label>MedInc: <input type="number" step="any" id="MedInc" value="8.3252"></label><br><br>
+    <label>HouseAge: <input type="number" step="any" id="HouseAge" value="41"></label><br><br>
+    <label>AveRooms: <input type="number" step="any" id="AveRooms" value="6.984127"></label><br><br>
+    <label>AveBedrms: <input type="number" step="any" id="AveBedrms" value="1.023809"></label><br><br>
+    <label>Population: <input type="number" step="any" id="Population" value="322"></label><br><br>
+    <label>AveOccup: <input type="number" step="any" id="AveOccup" value="2.555556"></label><br><br>
+    <label>Latitude: <input type="number" step="any" id="Latitude" value="37.88"></label><br><br>
+    <label>Longitude: <input type="number" step="any" id="Longitude" value="-122.23"></label><br><br>
+
+    <button onclick="makePrediction()">Predict</button>
+  </form>
+
+  <h2 id="result"></h2>
+
+  <script>
+    async function makePrediction() {
+      const features = [
+        parseFloat(document.getElementById("MedInc").value),
+        parseFloat(document.getElementById("HouseAge").value),
+        parseFloat(document.getElementById("AveRooms").value),
+        parseFloat(document.getElementById("AveBedrms").value),
+        parseFloat(document.getElementById("Population").value),
+        parseFloat(document.getElementById("AveOccup").value),
+        parseFloat(document.getElementById("Latitude").value),
+        parseFloat(document.getElementById("Longitude").value)
+      ];
+
+      const response = await fetch("/predict", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({ features })
+      });
+
+      const result = await response.json();
+      document.getElementById("result").innerText = 
+        response.ok 
+        ? "Predicted Median House Value: " + result.prediction.toFixed(2) + " (x100,000 USD)" 
+        : "Error: " + result.error;
+    }
+  </script>
+</body>
+</html>
